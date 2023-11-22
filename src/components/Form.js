@@ -7,12 +7,10 @@ function Form({onAddNote, editedNote, onEditSubmit}){
 
   useEffect(() => {
     if (editedNote) {
-      // Jika sedang dalam mode editing, isi formulir dengan data catatan yang akan diedit
       setTitle(editedNote.title);
       setParagraph(editedNote.paragraph);
       setEditingMode(true);
     } else {
-      // Jika bukan mode editing, reset formulir
       setTitle('');
       setParagraph('');
       setEditingMode(false);
@@ -21,8 +19,7 @@ function Form({onAddNote, editedNote, onEditSubmit}){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    
-        // Pastikan title dan paragraph tidak kosong
+
         if (title.trim() === '' || paragraph.trim() === '') {
           alert('Judul dan isi tidak boleh kosong');
           return;
@@ -32,16 +29,10 @@ function Form({onAddNote, editedNote, onEditSubmit}){
           return;
         }
         if (editingMode) {
-            // Jika sedang dalam mode editing, kirim catatan yang baru dan indeks yang sedang diedit
-            onEditSubmit({ title, paragraph });
-          } else {
-            // Jika bukan mode editing, kirim catatan baru
-            onAddNote({ title, paragraph });
-          }
-    
-        // Meneruskan data ke komponen induk
-    
-        // Mengosongkan input setelah submit
+          onEditSubmit({ ...editedNote, title, paragraph });
+        } else {
+          onAddNote({ title, paragraph });
+        }
         setTitle('');
         setParagraph('');
         setEditingMode(false);

@@ -3,7 +3,6 @@ import Form from './components/Form';
 import Note from './components/Note';
 import { useState, useEffect } from 'react';
 
-// ...
 
 function App() {
   const [initialNotes,setInitialNotes] = useState([]);
@@ -13,33 +12,39 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    // Filter initialNotes based on the search term
     const filteredNotes = initialNotes.filter((note) =>
       note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       note.paragraph.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // Update filteredNotes with the filtered result
     setFilteredNotes(filteredNotes);
   }, [searchTerm, initialNotes]);
 
-  // Update notes when initialNotes changes
   useEffect(() => {
     setNotes(initialNotes);
   }, [initialNotes]);
 
   const addNote = (newNote) => {
-    // Update initialNotes with the new note
-    setInitialNotes((prevNotes) => [...prevNotes, newNote]);
+    const now = new Date().toLocaleString();
+    const updatedNote = {
+      ...newNote,
+
+      updatedAt: now,
+    };
+
+    setInitialNotes((prevNotes) => [...prevNotes, updatedNote]);
+
+  };
   
-    // Filter initialNotes based on the search term
-    const filteredNotes = initialNotes.filter((note) =>
-      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      note.paragraph.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  
-    // Update filteredNotes with the filtered result
-    setFilteredNotes(filteredNotes);
+  const editSubmit = (editedNote) => {
+    const now = new Date().toLocaleString();
+    const updatedNote = {
+      ...editedNote,
+      updatedAt: now,
+    };
+
+    addNote(updatedNote);
+
   };
 
   const deleteNote = (index) => {
@@ -49,21 +54,12 @@ function App() {
   };
 
   const editNote = (index) => {
-    // Set catatan yang sedang diedit
     setEditedNote(initialNotes[index]);
-    // Hapus catatan yang sedang diedit dari daftar
     deleteNote(index);
   };
 
-  const editSubmit = (editedNote) => {
-    // Tambahkan catatan yang baru setelah diedit
-    addNote(editedNote);
-    // Reset catatan yang sedang diedit
-    setEditedNote(null);
-  };
 
   const handleSearch = () => {
-    // Implementasi pencarian di sini
     const filteredNotes = notes.filter((note) =>
       note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       note.paragraph.toLowerCase().includes(searchTerm.toLowerCase())
