@@ -2,7 +2,6 @@ import './App.css';
 import Form from './components/Form';
 import Note from './components/Note';
 import { useState, useEffect } from 'react';
-import Archive from './components/Archive';
 
 // ...
 
@@ -44,14 +43,14 @@ function App() {
   };
 
   const deleteNote = (index) => {
-    const updatedNotes = [...notes];
+    const updatedNotes = [...initialNotes];
     updatedNotes.splice(index, 1);
-    setNotes(updatedNotes);
+    setInitialNotes(updatedNotes);
   };
 
   const editNote = (index) => {
     // Set catatan yang sedang diedit
-    setEditedNote(notes[index]);
+    setEditedNote(initialNotes[index]);
     // Hapus catatan yang sedang diedit dari daftar
     deleteNote(index);
   };
@@ -84,10 +83,7 @@ function App() {
       <button onClick={handleSearch}>Cari</button>
       <Form onAddNote={addNote} editedNote={editedNote} onEditSubmit={editSubmit} />
       <Note notes={filteredNotes} onDeleteNote={deleteNote} onEditNote={editNote} />
-      <Archive archive={archive} />
-    </div>
-  );
-}
+      </div>
+)}
 
 export default App;
-
