@@ -1,4 +1,4 @@
-import './App.css';
+import './input.css';
 import Form from './components/Form';
 import Note from './components/Note';
 import { useState, useEffect } from 'react';
@@ -72,15 +72,18 @@ function App() {
   };
 
  return (
-    <div className="App">
-      <h1>Aplikasi Pencatatan</h1>
+    <div className="App flex flex-col gap-5">
+      <h1 className='text-center font-bold text-2xl text-white mt-5 md:text-3xl'>Aplikasi Pencatatan</h1>
+      <div className='flex justify-center gap-3'>
       <input
         type="text"
         placeholder="Cari catatan..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        className='bg-slate-700 text-white rounded-full px-4 py-2 text-xs md:text-base border-2 border-slate-300 placeholder-white shadow-lg'
       />
-      <button onClick={handleSearch}>Cari</button>
+      <button onClick={handleSearch} className='bg-orange-500 text-sm md:text-base text-white px-8 py-2 rounded-full shadow-lg'>Cari</button>
+      </div>
       <Form onAddNote={addNote} editedNote={editedNote} onEditSubmit={editSubmit} />
       <Note notes={filteredNotes} onDeleteNote={deleteNote} onEditNote={editNote} />
       </div>
