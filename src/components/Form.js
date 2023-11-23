@@ -1,50 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-function Form({onAddNote, editedNote, onEditSubmit}){
+function Form({onAddNote}){
     const [title, setTitle] = useState('');
-  const [paragraph, setParagraph] = useState('');
-  const [editingMode, setEditingMode] = useState(false);
-
-  useEffect(() => {
-    if (editedNote) {
-      setTitle(editedNote.title);
-      setParagraph(editedNote.paragraph);
-      setEditingMode(true);
-    } else {
-      setTitle('');
-      setParagraph('');
-      setEditingMode(false);
-    }
-  }, [editedNote]);
+  const [body, setbody] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (title.trim() === '' || paragraph.trim() === '') {
+        if (title.trim() === '' || body.trim() === '') {
           alert('Judul dan isi tidak boleh kosong');
           return;
         }
-        if (title.length > 30 || paragraph.length > 200) {
-          alert('Maximum character limit reached (Title: 30 characters, Paragraph: 200 characters).');
+        if (title.length > 30 || body.length > 300) {
+          alert('Maximum character limit reached (Title: 30 characters, body: 200 characters).');
           return;
         }
-        if (editingMode) {
-          onEditSubmit({ ...editedNote, title, paragraph });
-        } else {
-          onAddNote({ title, paragraph });
-        }
+        
+        onAddNote({ title, body });
+        
         setTitle('');
-        setParagraph('');
-        setEditingMode(false);
+        setbody('');
       };
     return (
         <div className='flex justify-center'>
             <form onSubmit={handleSubmit}className='flex flex-col bg-slate-600 justify-center md:w-[280px] w-[250px] text-sm md:text-base rounded-xl p-5 text-white gap-2 shadow-lg' >
+                <div className='flex'>
                 <label>Masukkan Judul</label>
-                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className='rounded-full bg-slate-700 border-slate-200 border-2 px-4 py-1'/>
-        <label>Masukkan Isi</label>
-        <input type="text" value={paragraph} onChange={(e) => setParagraph(e.target.value)} className='rounded-2xl bg-slate-700 border-slate-200 border-2 px-4 py-1'/>
-        <button type="submit" className='bg-orange-500 text-white px-8 py-2 rounded-full md:mt-10 mt-5'>{editingMode ? 'Simpan' : 'Tambah'}</button>
+                <label className='ml-16'>Sisa: {30 - title.length}</label>
+                </div>
+                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} maxLength={30} className='rounded-full bg-slate-700 border-slate-200 border-2 px-4 py-1'/>
+                <div className='flex'>
+                <label>Masukkan Isi</label>
+                <label className='md:ml-20 ml-16'>Sisa: {300 - body.length}</label>
+                </div>
+        <input type="text" value={body} onChange={(e) => setbody(e.target.value)} maxLength={300} className='rounded-2xl bg-slate-700 border-slate-200 border-2 px-4 py-1'/>
+        <button type="submit" className='bg-orange-500 text-white px-8 py-2 rounded-full md:mt-10 mt-5'>Tambah</button>
             </form>
         </div>
     )
